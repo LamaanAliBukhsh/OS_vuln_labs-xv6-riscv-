@@ -1,0 +1,18 @@
+{
+  "name": "xv6 Kernel Exploitation CTF",
+  "image": "ubuntu:22.04",
+  "postCreateCommand": "bash .devcontainer/setup.sh",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.cpptools",
+        "ms-vscode.hexeditor"
+      ],
+      "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash"
+      }
+    }
+  },
+  "forwardPorts": [],
+  "remoteUser": "root"
+}
