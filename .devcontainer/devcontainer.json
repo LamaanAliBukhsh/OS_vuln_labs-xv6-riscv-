@@ -1,0 +1,33 @@
+{
+  "name": "xv6 RISC-V Vulnerability Labs",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-22.04",
+  
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": true,
+      "installOhMyZsh": true,
+      "upgradePackages": true
+    }
+  },
+
+  "postCreateCommand": "bash .devcontainer/setup.sh",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.cpptools",
+        "ms-vscode.cpptools-extension-pack",
+        "ms-vscode.makefile-tools"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "C_Cpp.default.compilerPath": "/opt/riscv/bin/riscv64-unknown-elf-gcc",
+        "C_Cpp.default.intelliSenseMode": "gcc-x64"
+      }
+    }
+  },
+
+  "forwardPorts": [],
+  
+  "remoteUser": "vscode"
+}
