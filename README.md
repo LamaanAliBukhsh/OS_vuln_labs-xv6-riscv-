@@ -16,13 +16,16 @@ A hands-on learning environment for exploring operating system vulnerabilities u
    ```bash
    make qemu
    ```
-4. Start exploiting! 🎯
+4. **Press Enter** to see the xv6 shell prompt (`$`)
+5. Start exploiting! 🎯
 
 **To exit QEMU:** Press `Ctrl-A` then `X`
 
+**Troubleshooting:** If xv6 appears stuck after `make qemu`, just press **Enter** - the system has booted and is waiting for input!
+
 #### What Gets Installed Automatically:
 - ✅ RISC-V GNU toolchain
-- ✅ QEMU RISC-V emulator (v7.2+)
+- ✅ QEMU RISC-V emulator (v6.2)
 - ✅ All build dependencies
 - ✅ VS Code extensions for C/C++ development
 
