@@ -13,7 +13,6 @@ sudo apt-get install -y \
     git \
     build-essential \
     gdb-multiarch \
-    qemu-system-misc \
     gcc-riscv64-linux-gnu \
     binutils-riscv64-linux-gnu \
     autoconf \
@@ -33,51 +32,51 @@ sudo apt-get install -y \
     bc \
     zlib1g-dev \
     libexpat-dev \
-    ninja-build
+    ninja-build \
+    pkg-config \
+    libglib2.0-dev \
+    libpixman-1-dev \
+    libsdl2-dev
 
-# Check QEMU version
+# Install newer QEMU from source (need 7.2+)
+echo "Installing QEMU 8.0 for RISC-V..."
+if ! command -v qemu-system-riscv64 &> /dev/null || [ "$(qemu-system-riscv64 --version | grep -oP 'version \K[0-9]+\.[0-9]+' | head -1 | awk -F. '{print ($1 * 100) + $2}')" -lt 702 ]; then
+    cd /tmp
+    wget https://download.qemu.org/qemu-8.0.0.tar.xz
+    tar xf qemu-8.0.0.tar.xz
+    cd qemu-8.0.0
+    ./configure --target-list=riscv64-softmmu --prefix=/usr/local
+    make -j$(nproc)
+    sudo make install
+    cd ..
+    rm -rf qemu-8.0.0 qemu-8.0.0.tar.xz
+fi
+
+# Verify QEMU version
 echo "Verifying QEMU installation..."
 qemu-system-riscv64 --version
 
 # Set up RISC-V toolchain
-echo "Setting up RISC-V GNU toolchain..."
-if [ ! -d "/opt/riscv" ]; then
-    sudo mkdir -p /opt/riscv
-    cd /tmp
-    
-    # Clone and build RISC-V GNU toolchain
-    git clone --depth=1 https://github.com/riscv/riscv-gnu-toolchain
-    cd riscv-gnu-toolchain
-    
-    ./configure --prefix=/opt/riscv --enable-multilib
-    sudo make -j$(nproc)
-    
-    # Add to PATH
-    echo 'export PATH=/opt/riscv/bin:$PATH' >> ~/.bashrc
-    echo 'export PATH=/opt/riscv/bin:$PATH' >> ~/.zshrc
-    
-    # Clean up
-    cd ..
-    rm -rf riscv-gnu-toolchain
-else
-    echo "RISC-V toolchain already installed"
+echo "Setting up RISC-V toolchain..."
+# The system gcc-riscv64-linux-gnu should work fine for xv6
+# Add symlinks for compatibility with Makefile expectations
+if [ ! -f "/usr/local/bin/riscv64-unknown-elf-gcc" ]; then
+    sudo ln -sf /usr/bin/riscv64-linux-gnu-gcc /usr/local/bin/riscv64-unknown-elf-gcc
+    sudo ln -sf /usr/bin/riscv64-linux-gnu-ld /usr/local/bin/riscv64-unknown-elf-ld
+    sudo ln -sf /usr/bin/riscv64-linux-gnu-objcopy /usr/local/bin/riscv64-unknown-elf-objcopy
+    sudo ln -sf /usr/bin/riscv64-linux-gnu-objdump /usr/local/bin/riscv64-unknown-elf-objdump
 fi
-
-# Add PATH for current session
-export PATH=/opt/riscv/bin:$PATH
 
 # Verify installation
 echo "Verifying toolchain installation..."
-if command -v riscv64-unknown-elf-gcc &> /dev/null; then
-    echo "RISC-V GCC installed: $(riscv64-unknown-elf-gcc --version | head -n1)"
-else
-    echo "Using system RISC-V GCC: $(riscv64-linux-gnu-gcc --version | head -n1)"
-fi
+riscv64-linux-gnu-gcc --version | head -n1
+
+# Navigate to workspace
+cd /workspaces/*/ 2>/dev/null || cd "$GITHUB_WORKSPACE" || true
 
 # Test build
 echo "Testing xv6 build..."
-cd "$GITHUB_WORKSPACE" || cd /workspaces/*/
-make clean || true
+make clean 2>/dev/null || true
 
 echo ""
 echo "Setup complete! You can now build and run xv6:"
