@@ -10,7 +10,7 @@
     }
   },
 
-  "postCreateCommand": "bash .devcontainer/setup.sh",
+  "postCreateCommand": "bash .devcontainer/setup.sh 2>&1 | tee /tmp/setup.log",
 
   "customizations": {
     "vscode": {
@@ -20,9 +20,7 @@
         "ms-vscode.makefile-tools"
       ],
       "settings": {
-        "terminal.integrated.defaultProfile.linux": "bash",
-        "C_Cpp.default.compilerPath": "/opt/riscv/bin/riscv64-unknown-elf-gcc",
-        "C_Cpp.default.intelliSenseMode": "gcc-x64"
+        "terminal.integrated.defaultProfile.linux": "bash"
       }
     }
   },
