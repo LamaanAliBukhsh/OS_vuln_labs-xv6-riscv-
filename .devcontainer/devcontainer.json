@@ -4,7 +4,7 @@ git commit -m "Fix Codespace setup logging"{
   
   "features": {},
 
-  "postCreateCommand": ".devcontainer/setup.sh",
+  "postCreateCommand": "bash .devcontainer/setup.sh",
 
   "customizations": {
     "vscode": {
