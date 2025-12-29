@@ -1,0 +1,16 @@
+LAB 2: PRIVILEGE ESCALATION
+============================
+
+Goal: Gain root access and read the password file
+
+System Calls: setroot(uid, magic), readpassword(buf)
+Location: kernel/sysproc.c
+
+Test: password (fails without root)
+Execute:
+  password
+
+Hint: The authentication logic has a bug with boolean operators.
+Look carefully at the condition in setroot(). Should it use || or &&?
+
+Solution: exp2.c

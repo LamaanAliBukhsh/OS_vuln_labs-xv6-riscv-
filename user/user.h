@@ -24,6 +24,9 @@ int getpid(void);
 char* sys_sbrk(int,int);
 int pause(int);
 int uptime(void);
+int getprocinfo(int, char*);  // size, buffer
+int readpassword(char*);
+int setroot(int, int);
 
 // ulib.c
 int stat(const char*, struct stat*);

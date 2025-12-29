@@ -1,0 +1,17 @@
+LAB 1: BUFFER OVERFLOW
+======================
+
+Goal: Find the flag by exploiting a missing bounds check
+
+System Call: getprocinfo(size, buffer)
+Location: kernel/sysproc.c
+
+Test: procinfo (safe)
+Execute:
+  procinfo
+
+
+Hint: The syscall accepts a size parameter but doesn't validate it.
+What happens if you request more bytes than intended?
+
+Solution: exp1.c
